@@ -1,0 +1,27 @@
+[
+    {
+        "id": 1,
+        "brojSala": 3,
+        "adresa": "Knez Mihailova 1, Belgrade, Serbia"
+    },
+    {
+        "id": 2,
+        "brojSala": 5,
+        "adresa": "Terazije 2, Belgrade, Serbia"
+    },
+    {
+        "id": 3,
+        "brojSala": 4,
+        "adresa": "Kalemegdan 3, Belgrade, Serbia"
+    },
+    {
+        "id": 4,
+        "brojSala": 2,
+        "adresa": "Skadarlija 4, Belgrade, Serbia"
+    },
+    {
+        "id": 5,
+        "brojSala": 6,
+        "adresa": "Republic Square 5, Belgrade, Serbia"
+    }
+]
