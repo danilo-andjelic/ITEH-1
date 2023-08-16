@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bioskop D</title>
+    <title>Filmovi - Bioskop D</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
 </head>
-<body style="background-color: lightblue">
+<body style="background-color: beige">
     <div class="container-fluid">
         <nav class="navbar navbar-expand-lg navbar-light bg-secondary">
             <a class="navbar-brand" href="#">Bioskop D</a>
@@ -17,7 +17,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="">Home</a>
+                        <a class="nav-link" href="home.php">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="Filmovi.php">Filmovi</a>
@@ -42,11 +42,38 @@
             </div>
         </nav>
     </div>
-    <main class="container mt-5" style="background-color: lightblue">
-        <h1 class="display-4">Bioskop D</h1>
-        <p class="lead">Welcome to Bioskop D, your ultimate movie theater experience.</p>
-        <p>Kontakt: da20190243@student.fon.bg.ac.rs</p>
-    </main>    
+    
+    <main class="container mt-5" style="background-color: beige">
+        <h1 class="display-4">Filmovi</h1>
+
+        <?php
+        include_once('dbBroker.php');
+        include_once('model/Film.php');
+
+        $filmovi = Film::vratiSveFilmove($baza);
+
+        if ($filmovi === false) {
+            echo 'Error fetching filmovi: ' . mysqli_error($baza);
+        } else {
+            if (mysqli_num_rows($filmovi) > 0) {
+                while ($film = mysqli_fetch_assoc($filmovi)) {
+                    echo '<div class="card mt-3">';
+                    echo '<div class="card-body">';
+                    echo '<h5 class="card-title">' . $film['naslov'] . '</h5>';
+                    echo '<p class="card-text">Godina izdavanja: ' . $film['godinaIzdavanja'] . '</p>';
+                    echo '<p class="card-text">Cena karte: ' . $film['cenaKarte'] . '</p>';
+                    echo '</div>';
+                    echo '</div>';
+                }
+            } else {
+                echo '<p>Nema dostupnih filmova.</p>';
+            }
+        }
+
+        ?>
+
+    </main>
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
