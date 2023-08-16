@@ -47,6 +47,18 @@
         <h1 class="display-4">Autori</h1>
 
         <?php
+        include_once('model/Autor.php');
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_autor'])) {
+            $autorIdToDelete = $_POST['autorId'];
+
+            Autor::obrisiAutoraPremaID($baza, $autorIdToDelete);
+            header('Location: Autori.php');
+            exit();
+        }
+        ?>
+
+        <?php
         include_once('dbBroker.php');
         include_once('model/Autor.php');
 
@@ -56,13 +68,23 @@
             echo 'Error fetching autori: ' . mysqli_error($baza);
         } else {
             if (mysqli_num_rows($autori) > 0) {
+                echo '<table class="table">';
+                echo '<thead><tr><th>ID</th><th>Ime</th><th>Prezime</th><th>Akcije</th></tr></thead>';
+                echo '<tbody>';
                 while ($autor = mysqli_fetch_assoc($autori)) {
-                    echo '<div class="card mt-3">';
-                    echo '<div class="card-body">';
-                    echo '<h5 class="card-title">' . $autor['ime'] . ' ' . $autor['prezime'] . '</h5>';
-                    echo '</div>';
-                    echo '</div>';
+                    echo '<tr>';
+                    echo '<td>' . $autor['autorId'] . '</td>';
+                    echo '<td>' . $autor['ime'] . '</td>';
+                    echo '<td>' . $autor['prezime'] . '</td>';
+                    echo '<td>';
+                    echo '<form method="POST">';
+                    echo '<input type="hidden" name="autorId" value="' . $autor['autorId'] . '">';
+                    echo '<button type="submit" name="delete_autor" class="btn btn-danger btn-sm">Izbriši</button>';
+                    echo '</form>';
+                    echo '</td>';
+                    echo '</tr>';
                 }
+                echo '</tbody></table>';
             } else {
                 echo '<p>Nema dostupnih autora.</p>';
             }

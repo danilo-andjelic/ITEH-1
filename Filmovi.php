@@ -47,6 +47,18 @@
         <h1 class="display-4">Filmovi</h1>
 
         <?php
+        include_once('model/Film.php');
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_film'])) {
+            $filmIdToDelete = $_POST['filmId'];
+
+            Film::obrisiFilmPremaId($baza, $filmIdToDelete);
+            header('Location: Filmovi.php');
+            exit();
+        }
+        ?>
+
+        <?php
         include_once('dbBroker.php');
         include_once('model/Film.php');
 
@@ -57,13 +69,26 @@
         } else {
             if (mysqli_num_rows($filmovi) > 0) {
                 while ($film = mysqli_fetch_assoc($filmovi)) {
-                    echo '<div class="card mt-3">';
-                    echo '<div class="card-body">';
-                    echo '<h5 class="card-title">' . $film['naslov'] . '</h5>';
-                    echo '<p class="card-text">Godina izdavanja: ' . $film['godinaIzdavanja'] . '</p>';
-                    echo '<p class="card-text">Cena karte: ' . $film['cenaKarte'] . '</p>';
-                    echo '</div>';
-                    echo '</div>';
+                    echo '<table class="table">';
+                    echo '<thead><tr><th>ID</th><th>Naslov</th><th>Godina izdavanja</th><th>Cena karte</th><th>Autor</th><th>Akcije</th></tr></thead>';
+                    echo '<tbody>';
+                    while ($film = mysqli_fetch_assoc($filmovi)) {
+                        $autor = Autor::vratiAutoraPremaID($baza, $film['autorId']);
+                        echo '<tr>';
+                        echo '<td>' . $film['filmId'] . '</td>';
+                        echo '<td>' . $film['naslov'] . '</td>';
+                        echo '<td>' . $film['godinaIzdavanja'] . '</td>';
+                        echo '<td>' . $film['cenaKarte'] . '</td>';
+                        echo '<td>' . $autor['ime'] . ' ' . $autor['prezime'] . '</td>';
+                        echo '<td>';
+                        echo '<form method="POST">';
+                        echo '<input type="hidden" name="filmId" value="' . $film['filmId'] . '">';
+                        echo '<button type="submit" name="delete_film" class="btn btn-danger btn-sm">Izbriši</button>';
+                        echo '</form>';
+                        echo '</td>';
+                        echo '</tr>';
+                    }
+                    echo '</tbody></table>';
                 }
             } else {
                 echo '<p>Nema dostupnih filmova.</p>';

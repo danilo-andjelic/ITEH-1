@@ -29,7 +29,7 @@ class Autor
         $rez = mysqli_query($baza, $sqlUpit);
     }
 
-    public static function vratiAutoraPremaID($baza, $autorId)
+    public static function vratiAutoraPremaId($baza, $autorId)
     {
         $svi = self::vratiSveAutore($baza);
         while ($autor = mysqli_fetch_array($svi)) {
@@ -39,7 +39,7 @@ class Autor
         }
     }
 
-    public static function obrisiAutoraPremaID($baza, $autorId)
+    public static function obrisiAutoraPremaId($baza, $autorId)
     {
         $sqlUpit = "DELETE FROM autori WHERE autorId = $autorId";
         $rez = mysqli_query($baza, $sqlUpit);
